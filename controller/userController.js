@@ -7,7 +7,6 @@ import { sendEmail } from "../utils/sendEmail.js";
 import crypto from "crypto";
 // import {getResetPasswordToken} from "../router/userRouter.js"
 
-
 export const register = catchAsyncErrors(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return next(new ErrorHandler("Avatar and Resume are required", 400));
@@ -97,6 +96,8 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
     .cookie("token", "", {
       expires: new Date(Date.now()),
       httpOnly: true,
+      sameSite: "None",
+      secure: true,
     })
     .json({
       success: true,
@@ -227,7 +228,6 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler(error.message, 500));
   }
 });
-
 
 export const resetPassword = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.params;
